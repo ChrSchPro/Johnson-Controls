@@ -1,19 +1,138 @@
-<div class="container-divider"></div>
+
+<section id="main-content" class="section hero">
+  <div class="hero-inner">
+    <h1>
+      {{t 'submit_a_request'}}
+      <span class="follow-up-hint">
+      </span>
+    </h1>
+  </div>
+</section>
 <div class="container">
-  <div class="sub-nav">
-    {{breadcrumbs}}
-    <div class="search-container">
-      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" focusable="false" viewBox="0 0 12 12" class="search-icon" aria-hidden="true">
-        <circle cx="4.5" cy="4.5" r="4" fill="none" stroke="currentColor"/>
-        <path stroke="currentColor" stroke-linecap="round" d="M11 11L7.5 7.5"/>
-      </svg>
-      {{search submit=false}}
+  <a class="requests_list" href="/hc/requests">See all your requests</a>
+
+  <a href="/requests/new" id="back_btn">Back</a>
+  <div class="multiple-ticket-forms">
+    <div class="flex-grid" id="multiple-ticket-forms">
+      <div class="col">
+        <div class="accordion">
+          <img src="{{settings.accordion1}}">
+          <h2>{{settings.accordion1tag}}</h2>
+        </div>
+        <div class="panel">
+          {{#each ticket_forms}}
+            {{#if (compare display_name "==" ../settings.form1tag)}}
+              <a href="{{url}}">
+                <img src="{{../settings.form1}}">
+                <h2>{{display_name}}</h2>
+              </a>
+            {{/if}}
+            {{#if (compare display_name "==" ../settings.form2tag)}}
+              <a href="{{url}}">
+                <img src="{{../settings.form2}}">
+                <h2>{{display_name}}</h2>
+              </a>
+            {{/if}}
+            {{#if (compare display_name "==" ../settings.form3tag)}}
+              <a href="{{url}}">
+                <img src="{{../settings.form3}}">
+                <h2>{{display_name}}</h2>
+              </a>
+            {{/if}}
+            {{#if (compare display_name "==" ../settings.form4tag)}}
+              <a href="{{url}}">
+                <img src="{{../settings.form4}}">
+                <h2>{{display_name}}</h2>
+              </a>
+            {{/if}}
+            {{#if (compare display_name "==" ../settings.form5tag)}}
+              <a href="{{url}}">
+                <img src="{{../settings.form5}}">
+                <h2>{{display_name}}</h2>
+              </a>
+            {{/if}}
+            {{#if (compare display_name "==" ../settings.form6tag)}}
+              <a href="{{url}}">
+                <img src="{{../settings.form6}}">
+                <h2>{{display_name}}</h2>
+              </a>
+            {{/if}}
+          {{/each}}
+        </div>
+      </div>
+      <!--       <div class="col">
+  			<div class="accordion">
+  				<img src="{{settings.accordion2}}">
+          <h2>{{settings.accordion2tag}}</h2>
+				</div>
+				<div class="panel">
+  				{{#each ticket_forms}}
+        {{#if (compare display_name "==" ../settings.form11tag)}}
+          	<a href="{{url}}">
+            <img src="{{../settings.form11}}">
+            <h2>{{display_name}}</h2>
+            </a>
+          {{/if}}
+        {{#if (compare display_name "==" ../settings.form12tag)}}
+            <a href="{{url}}">
+            <img src="{{../settings.form12}}">
+            <h2>{{display_name}}</h2>
+            </a>
+          {{/if}}
+        {{#if (compare display_name "==" ../settings.form13tag)}}
+            <a href="{{url}}">
+            <img src="{{../settings.form13}}">
+            <h2>{{display_name}}</h2>
+            </a>
+          {{/if}}
+        {{#if (compare display_name "==" ../settings.form14tag)}}
+            <a href="{{url}}">
+            <img src="{{../settings.form14}}">
+            <h2>{{display_name}}</h2>
+            </a>
+          {{/if}}
+        {{#if (compare display_name "==" ../settings.form15tag)}}
+            <a href="{{url}}">
+            <img src="{{../settings.form15}}">
+            <h2>{{display_name}}</h2>
+            </a>
+          {{/if}}
+      {{/each}}
+				</div>
+        </div> -->
+      <!--       <div class="col">
+  			<div class="accordion">
+          <img src="{{settings.accordion3}}">
+          <h2>{{settings.accordion3tag}}</h2>
+				</div>
+				<div class="panel">
+          {{#each ticket_forms}}
+        {{#if (compare display_name "==" ../settings.form21tag)}}
+          	<a href="{{url}}">
+            <img src="{{../settings.form21}}">
+              <h2>{{display_name}}</h2>
+          	</a>
+          {{/if}}
+        {{#if (compare display_name "==" ../settings.form22tag)}}
+          	<a href="{{url}}">
+            <img src="{{../settings.form22}}">
+              <h2>{{display_name}}</h2>
+          	</a>
+          {{/if}}
+        {{#if (compare display_name "==" ../settings.form23tag)}}
+          	<a href="{{url}}">
+            <img src="{{../settings.form23}}">
+              <h2>{{display_name}}</h2>
+          	</a>
+          {{/if}}
+      {{/each}}
+				</div>
+        </div> -->
     </div>
   </div>
 
-  <h1>
-    {{t 'submit_a_request'}}
-  </h1>
+
+
 
   <div id="main-content" class="form">
     <div id="new-request-form"></div>
@@ -51,4 +170,37 @@
   };
 
   renderNewRequestForm(settings, props, container);
+</script>
+<script>
+  <!--     console.warn('New request page script'); -->
+
+  const form =  document.getElementById("new-request-form");
+  form.classList.add("hide");
+  console.log(form);
+
+
+  /*Toggle function to show and hide back btn, form and field boxes*/
+  const ticket_field_boxes = document.getElementById("multiple-ticket-forms");
+  <!--     const ticketFormBox = document.getElementById("new_request"); -->
+  const button = document.getElementById("back_btn");
+  <!--     const requests_list = document.getElementsByClassName("requests_list")[0]; -->
+  if (window.location.href != "https://sabroefactory1737986137.zendesk.com/hc/en-us/requests/new") {
+    /*Form and button is visible*/
+    <!--         ticketFormBox.classList.remove("hide"); -->
+    button.classList.remove("hide");
+    ticket_field_boxes.classList.add("hide");
+    form.classList.remove("hide");
+    <!--         requests_list.classList.add("hide"); -->
+
+  } else {
+    /*Custom field boxes is visible, form and button is hidden*/
+    <!--         ticketFormBox.classList.add("hide"); -->
+    button.classList.add("hide");
+    ticket_field_boxes.classList.remove("hide");
+  }
+
+  if (document.getElementsByClassName("sign-in").length !== 0) {
+    // Hide "See all requests button"
+    <!--         requests_list.classList.add("hide"); -->
+  }
 </script>
