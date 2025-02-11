@@ -1,7 +1,7 @@
 {
-  "name": "Copenhagen",
-  "author": "Zendesk",
-  "version": "4.2.8",
+  "name": "Johnson Controls v.2.3",
+  "author": "Proventic",
+  "version": "4.8.0",
   "api_version": 4,
   "default_locale": "en-us",
   "settings": [
@@ -13,7 +13,7 @@
           "type": "color",
           "description": "brand_color_description",
           "label": "brand_color_label",
-          "value": "#17494D"
+          "value": "#00539E"
         },
         {
           "identifier": "brand_text_color",
@@ -27,14 +27,14 @@
           "type": "color",
           "description": "text_color_description",
           "label": "text_color_label",
-          "value": "#2F3941"
+          "value": "#333333"
         },
         {
           "identifier": "link_color",
           "type": "color",
           "description": "link_color_description",
           "label": "link_color_label",
-          "value": "#1F73B7"
+          "value": "#00539e"
         },
         {
           "identifier": "hover_link_color",
@@ -48,7 +48,7 @@
           "type": "color",
           "description": "visited_link_color_description",
           "label": "visited_link_color_label",
-          "value": "#9358B0"
+          "value": "#4B61C3"
         },
         {
           "identifier": "background_color",
@@ -67,10 +67,15 @@
           "type": "list",
           "description": "heading_font_description",
           "label": "heading_font_label",
+          "value": "'Open Sans', sans-serif",
           "options": [
             {
               "label": "System",
               "value": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
+            },
+            {
+              "label": "Open Sans",
+              "value": "'Open Sans', sans-serif"
             },
             {
               "label": "Arial",
@@ -132,18 +137,22 @@
               "label": "Trebuchet MS",
               "value": "'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"
             }
-          ],
-          "value": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
+          ]
         },
         {
           "identifier": "text_font",
           "type": "list",
           "description": "text_font_description",
           "label": "text_font_label",
+          "value": "'Open Sans', sans-serif",
           "options": [
             {
               "label": "System",
               "value": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
+            },
+            {
+              "label": "Open Sans",
+              "value": "'Open Sans', sans-serif"
             },
             {
               "label": "Arial",
@@ -205,8 +214,7 @@
               "label": "Trebuchet MS",
               "value": "'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"
             }
-          ],
-          "value": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
+          ]
         }
       ]
     },
@@ -224,13 +232,275 @@
           "type": "checkbox",
           "description": "show_brand_name_description",
           "label": "show_brand_name_label",
-          "value": true
+          "value": false
         },
         {
           "identifier": "favicon",
           "type": "file",
           "description": "favicon_description",
           "label": "favicon_label"
+        }
+      ]
+    },
+    {
+      "label": "accordion_one_label",
+      "variables": [
+        {
+          "identifier": "accordion1",
+          "type": "file",
+          "description": "accordion1_description",
+          "label": "accordion1_label"
+        },
+        {
+          "identifier": "accordion1tag",
+          "type": "text",
+          "description": "accordion1tag_description",
+          "label": "accordion1tag_label",
+          "value": "Sales"
+        },
+        {
+          "identifier": "form1",
+          "type": "file",
+          "description": "form1_description",
+          "label": "form1_label"
+        },
+        {
+          "identifier": "form1tag",
+          "type": "text",
+          "description": "form1tag_description",
+          "label": "form1tag_label",
+          "value": "Order Entry"
+        },
+        {
+          "identifier": "form2",
+          "type": "file",
+          "description": "form2_description",
+          "label": "form2_label"
+        },
+        {
+          "identifier": "form2tag",
+          "type": "text",
+          "description": "form2tag_description",
+          "label": "form2tag_label",
+          "value": "Request For Quotation"
+        },
+        {
+          "identifier": "form3",
+          "type": "file",
+          "description": "form3_description",
+          "label": "form3_label"
+        },
+        {
+          "identifier": "form3tag",
+          "type": "text",
+          "description": "form3tag_description",
+          "label": "form3tag_label",
+          "value": "Product Support"
+        },
+        {
+          "identifier": "form4",
+          "type": "file",
+          "description": "form4_description",
+          "label": "form4_label"
+        },
+        {
+          "identifier": "form4tag",
+          "type": "text",
+          "description": "form4tag_description",
+          "label": "form4tag_label",
+          "value": ""
+        },
+        {
+          "identifier": "form5",
+          "type": "file",
+          "description": "form5_description",
+          "label": "form5_label"
+        },
+        {
+          "identifier": "form5tag",
+          "type": "text",
+          "description": "form5tag_description",
+          "label": "form5tag_label",
+          "value": ""
+        },
+        {
+          "identifier": "form6",
+          "type": "file",
+          "description": "form6_description",
+          "label": "form6_label"
+        },
+        {
+          "identifier": "form6tag",
+          "type": "text",
+          "description": "form6tag_description",
+          "label": "form6tag_label",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "label": "accordion_two_label",
+      "variables": [
+        {
+          "identifier": "accordion2",
+          "type": "file",
+          "description": "accordion2_description",
+          "label": "accordion2_label"
+        },
+        {
+          "identifier": "accordion2tag",
+          "type": "text",
+          "description": "accordion2tag_description",
+          "label": "accordion2tag_label",
+          "value": "Sabroe"
+        },
+        {
+          "identifier": "form11",
+          "type": "file",
+          "description": "form11_description",
+          "label": "form11_label"
+        },
+        {
+          "identifier": "form11tag",
+          "type": "text",
+          "description": "form11tag_description",
+          "label": "form11tag_label",
+          "value": "Sabroe product support"
+        },
+        {
+          "identifier": "form12",
+          "type": "file",
+          "description": "form12_description",
+          "label": "form12_label"
+        },
+        {
+          "identifier": "form12tag",
+          "type": "text",
+          "description": "form12tag_description",
+          "label": "form12tag_label",
+          "value": ""
+        },
+        {
+          "identifier": "form13",
+          "type": "file",
+          "description": "form13_description",
+          "label": "form13_label"
+        },
+        {
+          "identifier": "form13tag",
+          "type": "text",
+          "description": "form13tag_description",
+          "label": "form13tag_label",
+          "value": ""
+        },
+        {
+          "identifier": "form14",
+          "type": "file",
+          "description": "form14_description",
+          "label": "form14_label"
+        },
+        {
+          "identifier": "form14tag",
+          "type": "text",
+          "description": "form14tag_description",
+          "label": "form14tag_label",
+          "value": "#"
+        },
+        {
+          "identifier": "form15",
+          "type": "file",
+          "description": "form15_description",
+          "label": "form15_label"
+        },
+        {
+          "identifier": "form15tag",
+          "type": "text",
+          "description": "form15tag_description",
+          "label": "form15tag_label",
+          "value": "#"
+        }
+      ]
+    },
+    {
+      "label": "accordion_three_label",
+      "variables": [
+        {
+          "identifier": "accordion3",
+          "type": "file",
+          "description": "accordion3_description",
+          "label": "accordion3_label"
+        },
+        {
+          "identifier": "accordion3tag",
+          "type": "text",
+          "description": "accordion3tag_description",
+          "label": "accordion3tag_label",
+          "value": " HVAC spareparts"
+        },
+        {
+          "identifier": "form21",
+          "type": "file",
+          "description": "form21_description",
+          "label": "form21_label"
+        },
+        {
+          "identifier": "form21tag",
+          "type": "text",
+          "description": "form21tag_description",
+          "label": "form21tag_label",
+          "value": "HVAC – Customer Service"
+        },
+        {
+          "identifier": "form22",
+          "type": "file",
+          "description": "form22_description",
+          "label": "form22_label"
+        },
+        {
+          "identifier": "form22tag",
+          "type": "text",
+          "description": "form22tag_description",
+          "label": "form22tag_label",
+          "value": "HVAC - Missing, Incorrect or Damaged Parts upon Delivery"
+        },
+        {
+          "identifier": "form23",
+          "type": "file",
+          "description": "form23_description",
+          "label": "form23_label"
+        },
+        {
+          "identifier": "form23tag",
+          "type": "text",
+          "description": "form23tag_description",
+          "label": "form23tag_label",
+          "value": "HVAC - Technical Enquiry & Quotations"
+        },
+        {
+          "identifier": "form24",
+          "type": "file",
+          "description": "form24_description",
+          "label": "form24_label"
+        },
+        {
+          "identifier": "form24tag",
+          "type": "text",
+          "description": "form24tag_description",
+          "label": "form24tag_label",
+          "value": "#"
+        },
+        {
+          "identifier": "form25",
+          "type": "file",
+          "description": "form25_description",
+          "label": "form25_label"
+        },
+        {
+          "identifier": "form25tag",
+          "type": "text",
+          "description": "form25tag_description",
+          "label": "form25tag_label",
+          "value": "#"
         }
       ]
     },
