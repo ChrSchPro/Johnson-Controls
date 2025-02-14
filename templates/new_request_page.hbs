@@ -159,6 +159,7 @@
     brandId: {{json brand.id}},
     organizations: {{json user.organizations}},
     wysiwyg: true,
+    isAutocomplete: true,
     answerBotModal: {
       answerBot: {{json answer_bot}},
       hasRequestManagement: {{json help_center.request_management_enabled}},
@@ -168,8 +169,9 @@
       requestPath: {{json (page_path 'request' id=answer_bot.request_id)}}
     },
   };
-
+console.log(props.requestForm);
   renderNewRequestForm(settings, props, container);
+  props.requestForm.ticket_fields[2].attribute = "aria-autocomplete='list'";
 </script>
 <script>
   <!--     console.warn('New request page script'); -->
@@ -203,4 +205,5 @@
     // Hide "See all requests button"
     <!--         requests_list.classList.add("hide"); -->
   }
+
 </script>

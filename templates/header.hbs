@@ -2,16 +2,28 @@
 
 <header class="header">
   <div class="logo">
-    {{#link 'help_center'}}
+    <a href="/requests/new">
       <img src="{{settings.logo}}" alt="{{t 'home_page' name=help_center.name}}" />
       {{#if settings.show_brand_name}}
         <span aria-hidden="true">{{help_center.name}}</span>
       {{/if}}
-    {{/link}}
+    </a>
   </div>
 
   <div class="nav-wrapper-desktop">
-    <nav class="user-nav" id="user-nav" aria-label="{{t 'user_navigation'}}">
+    <div class="dropdown">
+      <button class="dropdown-toggle" aria-haspopup="true" style="color:white;vertical-align: inherit;padding-right:20px;">
+        Sabroe Factory
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" focusable="false" viewBox="0 0 12 12" class="dropdown-chevron-icon">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" d="M3 4.5l2.6 2.6c.2.2.5.2.7 0L9 4.5"/>
+        </svg>
+      </button>
+      <span class="dropdown-menu dropdown-menu-end" role="menu">
+            <a href="https://jciparts1737986068.zendesk.com/hc/en-us/requests/new" rel="nofollow" role="menuitem">JCI Spare Parts and AfterMarket Solutions
+              </a>
+          </span>
+    </div>
+    <nav class="user-nav" id="user-nav">
       <ul class="user-nav-list">
         <li>{{link 'community'}}</li>
         <li>{{link 'new_request' class='submit-a-request'}}</li>
@@ -90,6 +102,7 @@
             {{link "sign_out" role="menuitem"}}
           </li>
         {{/if}}
+        </li>
       </ul>
     </nav>
   </div>

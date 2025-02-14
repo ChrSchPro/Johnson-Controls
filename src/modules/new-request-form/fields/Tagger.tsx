@@ -31,6 +31,8 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
     });
 
   const selectionValue = (value as string | undefined) ?? "";
+  const [poptions, setPoptions] = useState(currentGroup.options);
+  // const [inputValue, setInputValue] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -57,6 +59,23 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
     if (changes.isExpanded !== undefined) {
       setIsExpanded(changes.isExpanded);
     }
+
+    if (changes.inputValue !== undefined) {
+      if (changes.inputValue === "") {
+        setPoptions(currentGroup.options);
+      } else {
+        // setInputValue(changes.inputValue);
+        const regex = new RegExp(
+          changes.inputValue.replace(/[.*+?^${}()|[\]\\]/giu, "\\$&"),
+          "giu"
+        );
+        console.log(regex);
+        console.log(changes.inputValue);
+        setPoptions(
+          currentGroup.options.filter((poption) => poption.label.match(regex))
+        );
+      }
+    }
   };
 
   return (
@@ -71,11 +90,11 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
       <Combobox
         ref={wrapperRef}
         inputProps={{ required, name }}
-        isEditable={false}
+        isEditable={true}
+        isAutocomplete
         validation={error ? "error" : undefined}
         onChange={handleChange}
         selectionValue={selectionValue}
-        inputValue={selectionValue}
         renderValue={({ selection }) =>
           (selection as ISelectedOption | null)?.label ?? <EmptyValueOption />
         }
@@ -86,20 +105,20 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
         )}
         {currentGroup.type === "SubGroup" ? (
           <OptGroup aria-label={currentGroup.name}>
-            {currentGroup.options.map((option) => (
-              <Option key={option.value} {...option}>
-                {option.menuLabel ?? option.label}
+            {poptions.map((poption) => (
+              <Option key={poption.value} {...poption}>
+                {poption.menuLabel ?? poption.label}
               </Option>
             ))}
           </OptGroup>
         ) : (
-          currentGroup.options.map((option) =>
-            option.value === "" ? (
-              <Option key={option.value} {...option}>
+          poptions.map((poption) =>
+            poption.value === "" ? (
+              <Option key={poption.value} {...poption}>
                 <EmptyValueOption />
               </Option>
             ) : (
-              <Option key={option.value} {...option} />
+              <Option key={poption.value} {...poption} />
             )
           )
         )}
