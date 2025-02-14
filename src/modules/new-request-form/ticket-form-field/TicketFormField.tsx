@@ -48,8 +48,13 @@ export function TicketFormField({
       <input type="hidden" name={field.name} value={field.value as string} />
       {field.options.length > 1 && (
         <GardenField>
-          <Label>{field.label}</Label>
-          <Combobox isEditable={false} onChange={handleChange} ref={ref}>
+          <Label hidden={true}>{field.label}</Label>
+          <Combobox
+            hidden={true}
+            isEditable={false}
+            onChange={handleChange}
+            ref={ref}
+          >
             {field.options.map((option) => (
               <Option
                 key={option.value}

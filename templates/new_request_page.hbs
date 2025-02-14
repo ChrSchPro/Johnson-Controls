@@ -16,44 +16,44 @@
     <div class="flex-grid" id="multiple-ticket-forms">
       <div class="col">
         <div class="accordion">
-          <img src="{{settings.accordion1}}">
+          <img src="{{settings.accordion1}}" alt="">
           <h2>{{settings.accordion1tag}}</h2>
         </div>
         <div class="panel">
           {{#each ticket_forms}}
             {{#if (compare display_name "==" ../settings.form1tag)}}
               <a href="{{url}}">
-                <img src="{{../settings.form1}}">
+                <img src="{{../settings.form1}}" alt="">
                 <h2>{{display_name}}</h2>
               </a>
             {{/if}}
             {{#if (compare display_name "==" ../settings.form2tag)}}
               <a href="{{url}}">
-                <img src="{{../settings.form2}}">
+                <img src="{{../settings.form2}}" alt="">
                 <h2>{{display_name}}</h2>
               </a>
             {{/if}}
             {{#if (compare display_name "==" ../settings.form3tag)}}
               <a href="{{url}}">
-                <img src="{{../settings.form3}}">
+                <img src="{{../settings.form3}}" alt="">
                 <h2>{{display_name}}</h2>
               </a>
             {{/if}}
             {{#if (compare display_name "==" ../settings.form4tag)}}
               <a href="{{url}}">
-                <img src="{{../settings.form4}}">
+                <img src="{{../settings.form4}}" alt="">
                 <h2>{{display_name}}</h2>
               </a>
             {{/if}}
             {{#if (compare display_name "==" ../settings.form5tag)}}
               <a href="{{url}}">
-                <img src="{{../settings.form5}}">
+                <img src="{{../settings.form5}}" alt="">
                 <h2>{{display_name}}</h2>
               </a>
             {{/if}}
             {{#if (compare display_name "==" ../settings.form6tag)}}
               <a href="{{url}}">
-                <img src="{{../settings.form6}}">
+                <img src="{{../settings.form6}}" alt="">
                 <h2>{{display_name}}</h2>
               </a>
             {{/if}}
@@ -159,7 +159,6 @@
     brandId: {{json brand.id}},
     organizations: {{json user.organizations}},
     wysiwyg: true,
-    isAutocomplete: true,
     answerBotModal: {
       answerBot: {{json answer_bot}},
       hasRequestManagement: {{json help_center.request_management_enabled}},
@@ -169,16 +168,12 @@
       requestPath: {{json (page_path 'request' id=answer_bot.request_id)}}
     },
   };
-console.log(props.requestForm);
   renderNewRequestForm(settings, props, container);
-  props.requestForm.ticket_fields[2].attribute = "aria-autocomplete='list'";
 </script>
 <script>
-  <!--     console.warn('New request page script'); -->
 
   const form =  document.getElementById("new-request-form");
   form.classList.add("hide");
-  console.log(form);
 
 
   /*Toggle function to show and hide back btn, form and field boxes*/
@@ -186,7 +181,7 @@ console.log(props.requestForm);
   <!--     const ticketFormBox = document.getElementById("new_request"); -->
   const button = document.getElementById("back_btn");
   <!--     const requests_list = document.getElementsByClassName("requests_list")[0]; -->
-  if (window.location.href != "https://sabroefactory1737986137.zendesk.com/hc/en-us/requests/new") {
+  if (window.location.href !== "https://sabroefactory1737986137.zendesk.com/hc/en-us/requests/new") {
     /*Form and button is visible*/
     <!--         ticketFormBox.classList.remove("hide"); -->
     button.classList.remove("hide");
