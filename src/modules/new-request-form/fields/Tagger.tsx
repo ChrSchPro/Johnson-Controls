@@ -31,8 +31,8 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
     });
 
   const selectionValue = (value as string | undefined) ?? "";
-  const [poptions, setPoptions] = useState(currentGroup.options);
-  // const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  const [chosenValue, setChosenValue] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -42,7 +42,6 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
       combobox?.setAttribute("aria-required", "true");
     }
   }, [wrapperRef, required]);
-
   const handleChange: IComboboxProps["onChange"] = (changes) => {
     if (
       typeof changes.selectionValue === "string" &&
@@ -54,30 +53,24 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
 
     if (typeof changes.selectionValue === "string") {
       onChange(changes.selectionValue);
+      setInputValue(changes.selectionValue); // Update inputValue on selection
+    }
+    if (typeof changes.inputValue === "string") {
+      setInputValue(changes.inputValue); // Update inputValue on typing
     }
 
     if (changes.isExpanded !== undefined) {
       setIsExpanded(changes.isExpanded);
     }
-
-    if (changes.inputValue !== undefined) {
-      if (changes.inputValue === "") {
-        setPoptions(currentGroup.options);
-      } else {
-        // setInputValue(changes.inputValue);
-        const regex = new RegExp(
-          changes.inputValue.replace(/[.*+?^${}()|[\]\\]/giu, "\\$&"),
-          "giu"
-        );
-        console.log(regex);
-        console.log(changes.inputValue);
-        setPoptions(
-          currentGroup.options.filter((poption) => poption.label.match(regex))
-        );
-      }
+    if (changes.selectionValue && typeof changes.selectionValue === "string") {
+      setChosenValue(changes.selectionValue);
+    } else if (changes.inputValue) {
+      setChosenValue(changes.inputValue);
     }
   };
-
+  const filteredOptions = currentGroup.options.filter((option) =>
+    option.label.toLowerCase().includes(inputValue.toLowerCase())
+  );
   return (
     <GardenField>
       <Label>
@@ -95,6 +88,7 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
         validation={error ? "error" : undefined}
         onChange={handleChange}
         selectionValue={selectionValue}
+        inputValue={chosenValue}
         renderValue={({ selection }) =>
           (selection as ISelectedOption | null)?.label ?? <EmptyValueOption />
         }
@@ -105,20 +99,20 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
         )}
         {currentGroup.type === "SubGroup" ? (
           <OptGroup aria-label={currentGroup.name}>
-            {poptions.map((poption) => (
-              <Option key={poption.value} {...poption}>
-                {poption.menuLabel ?? poption.label}
+            {filteredOptions.map((option) => (
+              <Option key={option.value} {...option}>
+                {option.menuLabel ?? option.label}
               </Option>
             ))}
           </OptGroup>
         ) : (
-          poptions.map((poption) =>
-            poption.value === "" ? (
-              <Option key={poption.value} {...poption}>
+          filteredOptions.map((option) =>
+            option.value === "" ? (
+              <Option key={option.value} {...option}>
                 <EmptyValueOption />
               </Option>
             ) : (
-              <Option key={poption.value} {...poption} />
+              <Option key={option.value} {...option} />
             )
           )
         )}
