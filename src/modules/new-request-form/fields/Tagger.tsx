@@ -32,7 +32,6 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
 
   const selectionValue = (value as string | undefined) ?? "";
   const [inputValue, setInputValue] = useState("");
-  const [chosenValue, setChosenValue] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -50,26 +49,32 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
       setCurrentGroupByIdentifier(changes.selectionValue);
       return;
     }
-
     if (typeof changes.selectionValue === "string") {
       onChange(changes.selectionValue);
       setInputValue(changes.selectionValue); // Update inputValue on selection
     }
-    if (typeof changes.inputValue === "string") {
+    if (
+      typeof changes.inputValue === "string" &&
+      typeof changes.selectionValue !== "string"
+    ) {
       setInputValue(changes.inputValue); // Update inputValue on typing
+    }
+
+    if (
+      changes.type === "option:click" &&
+      changes.selectionValue === undefined
+    ) {
+      setInputValue(selectionValue);
     }
 
     if (changes.isExpanded !== undefined) {
       setIsExpanded(changes.isExpanded);
     }
-    if (changes.selectionValue && typeof changes.selectionValue === "string") {
-      setChosenValue(changes.selectionValue);
-    } else if (changes.inputValue) {
-      setChosenValue(changes.inputValue);
-    }
   };
-  const filteredOptions = currentGroup.options.filter((option) =>
-    option.label.toLowerCase().includes(inputValue.toLowerCase())
+  const filteredOptions = currentGroup.options.filter(
+    (option) =>
+      option.label.toLowerCase().includes(inputValue.toLowerCase()) ||
+      option.value.toLowerCase().includes(inputValue.toLowerCase())
   );
   return (
     <GardenField>
@@ -88,7 +93,7 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
         validation={error ? "error" : undefined}
         onChange={handleChange}
         selectionValue={selectionValue}
-        inputValue={chosenValue}
+        inputValue={inputValue}
         renderValue={({ selection }) =>
           (selection as ISelectedOption | null)?.label ?? <EmptyValueOption />
         }
@@ -99,7 +104,7 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
         )}
         {currentGroup.type === "SubGroup" ? (
           <OptGroup aria-label={currentGroup.name}>
-            {filteredOptions.map((option) => (
+            {currentGroup.options.map((option) => (
               <Option key={option.value} {...option}>
                 {option.menuLabel ?? option.label}
               </Option>
