@@ -972,7 +972,7 @@ function Tagger({ field, onChange }) {
         hasEmptyOption: true,
     });
     const selectionValue = value ?? "";
-    const [inputValue, setInputValue] = reactExports.useState("");
+    const [inputValue, setInputValue] = reactExports.useState(selectionValue ? selectionValue : "");
     const [isExpanded, setIsExpanded] = reactExports.useState(false);
     const wrapperRef = reactExports.useRef(null);
     reactExports.useEffect(() => {

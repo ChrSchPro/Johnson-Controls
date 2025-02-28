@@ -31,7 +31,9 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
     });
 
   const selectionValue = (value as string | undefined) ?? "";
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(
+    selectionValue ? selectionValue : ""
+  );
   const [isExpanded, setIsExpanded] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -59,7 +61,6 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
     ) {
       setInputValue(changes.inputValue); // Update inputValue on typing
     }
-
     if (
       changes.type === "option:click" &&
       changes.selectionValue === undefined
