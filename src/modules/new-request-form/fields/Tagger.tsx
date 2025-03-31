@@ -31,6 +31,7 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
     });
 
   const selectionValue = (value as string | undefined) ?? "";
+  //on validation error set the inputValue.
   const [inputValue, setInputValue] = useState(
     selectionValue ? selectionValue : ""
   );
@@ -61,6 +62,7 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
     ) {
       setInputValue(changes.inputValue); // Update inputValue on typing
     }
+    //Sets inputValue to SelectionValue when selecting the option that already is selected.
     if (
       changes.type === "option:click" &&
       changes.selectionValue === undefined
@@ -72,6 +74,7 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
       setIsExpanded(changes.isExpanded);
     }
   };
+  //Filter options by input. If filter by label returns nothing filter by value.
   const filteredOptions = currentGroup.options.filter(
     (option) =>
       option.label.toLowerCase().includes(inputValue.toLowerCase()) ||
@@ -89,12 +92,12 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
       <Combobox
         ref={wrapperRef}
         inputProps={{ required, name }}
-        isEditable={true}
-        isAutocomplete
+        isEditable={true} //changed from false
+        isAutocomplete //added
         validation={error ? "error" : undefined}
         onChange={handleChange}
         selectionValue={selectionValue}
-        inputValue={inputValue}
+        inputValue={inputValue} //changed from {selectionValue}
         renderValue={({ selection }) =>
           (selection as ISelectedOption | null)?.label ?? <EmptyValueOption />
         }
@@ -112,6 +115,7 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
             ))}
           </OptGroup>
         ) : (
+          //iterate through filterOptions instead of currentgroup.options
           filteredOptions.map((option) =>
             option.value === "" ? (
               <Option key={option.value} {...option}>
