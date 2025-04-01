@@ -13,9 +13,10 @@ import {
 } from "@zendeskgarden/react-dropdowns.next";
 import { Span } from "@zendeskgarden/react-typography";
 import type { Field } from "../data-types";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { useNestedOptions } from "./useNestedOptions";
 import { EmptyValueOption } from "./EmptyValueOption";
+import { debounce } from "lodash";
 
 interface TaggerProps {
   field: Field;
@@ -31,10 +32,7 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
     });
 
   const selectionValue = (value as string | undefined) ?? "";
-  //on validation error set the inputValue.
-  const [inputValue, setInputValue] = useState(
-    selectionValue ? selectionValue : ""
-  );
+  const [inputValue, setInputValue] = useState(selectionValue);
   const [isExpanded, setIsExpanded] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -44,6 +42,13 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
       combobox?.setAttribute("aria-required", "true");
     }
   }, [wrapperRef, required]);
+
+  // Introduced debouncing to improve performance and reduce excessive re-renders while typing.
+  const debouncedSetInputValue = useMemo(
+    () => debounce(setInputValue, 300),
+    []
+  );
+
   const handleChange: IComboboxProps["onChange"] = (changes) => {
     if (
       typeof changes.selectionValue === "string" &&
@@ -54,37 +59,41 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
     }
     if (typeof changes.selectionValue === "string") {
       onChange(changes.selectionValue);
-      setInputValue(changes.selectionValue); // Update inputValue on selection
+      setInputValue(""); // Clear input after selection to allow new search
+      document.activeElement?.blur(); // Remove focus from dropdown to prevent accidental interactions
     }
     if (
       typeof changes.inputValue === "string" &&
       typeof changes.selectionValue !== "string"
     ) {
-      setInputValue(changes.inputValue); // Update inputValue on typing
+      debouncedSetInputValue(changes.inputValue);
     }
-    //Sets inputValue to SelectionValue when selecting the option that already is selected.
     if (
       changes.type === "option:click" &&
       changes.selectionValue === undefined
     ) {
       setInputValue(selectionValue);
     }
-
     if (changes.isExpanded !== undefined) {
       setIsExpanded(changes.isExpanded);
     }
   };
-  //Filter options by input. If filter by label returns nothing filter by value.
-  const filteredOptions = currentGroup.options.filter(
-    (option) =>
-      option.label.toLowerCase().includes(inputValue.toLowerCase()) ||
-      option.value.toLowerCase().includes(inputValue.toLowerCase())
+
+  // Optimized filtering logic using useMemo for better performance
+  const filteredOptions = useMemo(
+    () =>
+      currentGroup.options.filter(
+        (option) =>
+          option.label.toLowerCase().includes(inputValue.toLowerCase()) ||
+          option.value.toLowerCase().includes(inputValue.toLowerCase())
+      ),
+    [inputValue, currentGroup.options]
   );
+
   return (
     <GardenField>
       <Label>
-        {label}
-        {required && <Span aria-hidden="true">*</Span>}
+        {label} {required && <Span aria-hidden="true">*</Span>}
       </Label>
       {description && (
         <Hint dangerouslySetInnerHTML={{ __html: description }} />
@@ -92,12 +101,12 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
       <Combobox
         ref={wrapperRef}
         inputProps={{ required, name }}
-        isEditable={true} //changed from false
-        isAutocomplete //added
+        isEditable={true}
+        isAutocomplete
         validation={error ? "error" : undefined}
         onChange={handleChange}
         selectionValue={selectionValue}
-        inputValue={inputValue} //changed from {selectionValue}
+        inputValue={inputValue}
         renderValue={({ selection }) =>
           (selection as ISelectedOption | null)?.label ?? <EmptyValueOption />
         }
@@ -114,17 +123,12 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
               </Option>
             ))}
           </OptGroup>
+        ) : filteredOptions.length > 0 ? (
+          filteredOptions.map((option) => (
+            <Option key={option.value} {...option} />
+          ))
         ) : (
-          //iterate through filterOptions instead of currentgroup.options
-          filteredOptions.map((option) =>
-            option.value === "" ? (
-              <Option key={option.value} {...option}>
-                <EmptyValueOption />
-              </Option>
-            ) : (
-              <Option key={option.value} {...option} />
-            )
-          )
+          <Option disabled>No results found</Option>
         )}
       </Combobox>
       {error && <Message validation="error">{error}</Message>}

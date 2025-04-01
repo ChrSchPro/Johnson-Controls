@@ -1,4 +1,4 @@
-import { j as jsxRuntimeExports, F as Field, L as Label, S as Span, H as Hint, I as Input$1, M as Message, r as reactExports, u as useToast, a as useTranslation, N as Notification, T as Title, C as Close, s as styled, b as Textarea, d as Field$1, e as Label$1, f as Hint$1, h as Combobox, O as Option, i as Message$1, k as Checkbox$1, l as OptGroup, p as purify, m as FileList, n as File, o as Tooltip, P as Progress, A as Anchor, q as mime, t as useDropzone, v as FileUpload, D as Datepicker, w as useGrid, K as KEYS, x as focusStyles, y as FauxInput, z as Tag, B as SvgAlertWarningStroke, E as MediaInput, G as SvgCreditCardStroke, $ as $e, J as getColorV8, Q as Header, R as SvgCheckCircleStroke, U as useModalContainer, V as Modal, W as Body, X as Accordion, Y as Paragraph, Z as Footer$1, _ as FooterItem, a0 as Button, a1 as Close$1, a2 as addFlashNotification, a3 as debounce, a4 as Alert, a5 as initI18next, a6 as loadTranslations, a7 as reactDomExports, a8 as ThemeProviders, a9 as createTheme } from 'shared';
+import { j as jsxRuntimeExports, F as Field, L as Label, S as Span, H as Hint, I as Input$1, M as Message, r as reactExports, u as useToast, a as useTranslation, N as Notification, T as Title, C as Close, s as styled, b as Textarea, d as Field$1, e as Label$1, f as Hint$1, h as Combobox, O as Option, i as Message$1, k as Checkbox$1, l as OptGroup, p as purify, m as FileList, n as File, o as Tooltip, P as Progress, A as Anchor, q as mime, t as useDropzone, v as FileUpload, D as Datepicker, w as useGrid, K as KEYS, x as focusStyles, y as FauxInput, z as Tag, B as SvgAlertWarningStroke, E as MediaInput, G as SvgCreditCardStroke, J as lodashExports, $ as $e, Q as getColorV8, R as Header, U as SvgCheckCircleStroke, V as useModalContainer, W as Modal, X as Body, Y as Accordion, Z as Paragraph, _ as Footer$1, a0 as FooterItem, a1 as Button, a2 as Close$1, a3 as addFlashNotification, a4 as debounce, a5 as Alert, a6 as initI18next, a7 as loadTranslations, a8 as reactDomExports, a9 as ThemeProviders, aa as createTheme } from 'shared';
 
 function Input({ field, onChange }) {
     const { label, error, value, name, required, description, type } = field;
@@ -972,7 +972,7 @@ function Tagger({ field, onChange }) {
         hasEmptyOption: true,
     });
     const selectionValue = value ?? "";
-    const [inputValue, setInputValue] = reactExports.useState(selectionValue ? selectionValue : "");
+    const [inputValue, setInputValue] = reactExports.useState(selectionValue);
     const [isExpanded, setIsExpanded] = reactExports.useState(false);
     const wrapperRef = reactExports.useRef(null);
     reactExports.useEffect(() => {
@@ -981,6 +981,8 @@ function Tagger({ field, onChange }) {
             combobox?.setAttribute("aria-required", "true");
         }
     }, [wrapperRef, required]);
+    // Introduced debouncing to improve performance and reduce excessive re-renders while typing.
+    const debouncedSetInputValue = reactExports.useMemo(() => lodashExports.debounce(setInputValue, 300), []);
     const handleChange = (changes) => {
         if (typeof changes.selectionValue === "string" &&
             isGroupIdentifier(changes.selectionValue)) {
@@ -989,11 +991,12 @@ function Tagger({ field, onChange }) {
         }
         if (typeof changes.selectionValue === "string") {
             onChange(changes.selectionValue);
-            setInputValue(changes.selectionValue); // Update inputValue on selection
+            setInputValue(""); // Clear input after selection to allow new search
+            document.activeElement?.blur(); // Remove focus from dropdown to prevent accidental interactions
         }
         if (typeof changes.inputValue === "string" &&
             typeof changes.selectionValue !== "string") {
-            setInputValue(changes.inputValue); // Update inputValue on typing
+            debouncedSetInputValue(changes.inputValue);
         }
         if (changes.type === "option:click" &&
             changes.selectionValue === undefined) {
@@ -1003,9 +1006,10 @@ function Tagger({ field, onChange }) {
             setIsExpanded(changes.isExpanded);
         }
     };
-    const filteredOptions = currentGroup.options.filter((option) => option.label.toLowerCase().includes(inputValue.toLowerCase()) ||
-        option.value.toLowerCase().includes(inputValue.toLowerCase()));
-    return (jsxRuntimeExports.jsxs(Field$1, { children: [jsxRuntimeExports.jsxs(Label$1, { children: [label, required && jsxRuntimeExports.jsx(Span, { "aria-hidden": "true", children: "*" })] }), description && (jsxRuntimeExports.jsx(Hint$1, { dangerouslySetInnerHTML: { __html: description } })), jsxRuntimeExports.jsxs(Combobox, { ref: wrapperRef, inputProps: { required, name }, isEditable: true, isAutocomplete: true, validation: error ? "error" : undefined, onChange: handleChange, selectionValue: selectionValue, inputValue: inputValue, renderValue: ({ selection }) => selection?.label ?? jsxRuntimeExports.jsx(EmptyValueOption, {}), isExpanded: isExpanded, children: [currentGroup.type === "SubGroup" && (jsxRuntimeExports.jsx(Option, { ...currentGroup.backOption })), currentGroup.type === "SubGroup" ? (jsxRuntimeExports.jsx(OptGroup, { "aria-label": currentGroup.name, children: currentGroup.options.map((option) => (jsxRuntimeExports.jsx(Option, { ...option, children: option.menuLabel ?? option.label }, option.value))) })) : (filteredOptions.map((option) => option.value === "" ? (jsxRuntimeExports.jsx(Option, { ...option, children: jsxRuntimeExports.jsx(EmptyValueOption, {}) }, option.value)) : (jsxRuntimeExports.jsx(Option, { ...option }, option.value))))] }), error && jsxRuntimeExports.jsx(Message$1, { validation: "error", children: error })] }));
+    // Optimized filtering logic using useMemo for better performance
+    const filteredOptions = reactExports.useMemo(() => currentGroup.options.filter((option) => option.label.toLowerCase().includes(inputValue.toLowerCase()) ||
+        option.value.toLowerCase().includes(inputValue.toLowerCase())), [inputValue, currentGroup.options]);
+    return (jsxRuntimeExports.jsxs(Field$1, { children: [jsxRuntimeExports.jsxs(Label$1, { children: [label, " ", required && jsxRuntimeExports.jsx(Span, { "aria-hidden": "true", children: "*" })] }), description && (jsxRuntimeExports.jsx(Hint$1, { dangerouslySetInnerHTML: { __html: description } })), jsxRuntimeExports.jsxs(Combobox, { ref: wrapperRef, inputProps: { required, name }, isEditable: true, isAutocomplete: true, validation: error ? "error" : undefined, onChange: handleChange, selectionValue: selectionValue, inputValue: inputValue, renderValue: ({ selection }) => selection?.label ?? jsxRuntimeExports.jsx(EmptyValueOption, {}), isExpanded: isExpanded, children: [currentGroup.type === "SubGroup" && (jsxRuntimeExports.jsx(Option, { ...currentGroup.backOption })), currentGroup.type === "SubGroup" ? (jsxRuntimeExports.jsx(OptGroup, { "aria-label": currentGroup.name, children: currentGroup.options.map((option) => (jsxRuntimeExports.jsx(Option, { ...option, children: option.menuLabel ?? option.label }, option.value))) })) : filteredOptions.length > 0 ? (filteredOptions.map((option) => (jsxRuntimeExports.jsx(Option, { ...option }, option.value)))) : (jsxRuntimeExports.jsx(Option, { disabled: true, children: "No results found" }))] }), error && jsxRuntimeExports.jsx(Message$1, { validation: "error", children: error })] }));
 }
 
 function useDebounce(value, delayMs) {
