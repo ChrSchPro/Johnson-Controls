@@ -134,7 +134,7 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
             <Option key={option.value} {...option} />
           ))
         ) : (
-          <Option disabled>No results found</Option>
+          <Option isDisabled>No results found</Option>
         )}
       </Combobox>
       <input type="hidden" name={name} value={selectionValue} />
