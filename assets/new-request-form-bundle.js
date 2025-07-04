@@ -975,6 +975,7 @@ function Tagger({ field, onChange }) {
     const [inputValue, setInputValue] = reactExports.useState(selectionValue);
     const [isExpanded, setIsExpanded] = reactExports.useState(false);
     const wrapperRef = reactExports.useRef(null);
+    const hasOpenedOnce = reactExports.useRef(false);
     reactExports.useEffect(() => {
         if (wrapperRef.current && required) {
             const combobox = wrapperRef.current.querySelector("[role=combobox]");
@@ -1005,11 +1006,15 @@ function Tagger({ field, onChange }) {
         if (changes.isExpanded !== undefined) {
             setIsExpanded(changes.isExpanded);
         }
+        if (changes.isExpanded === true && !hasOpenedOnce.current) {
+            hasOpenedOnce.current = true;
+            setInputValue("");
+        }
     };
     // Optimized filtering logic using useMemo for better performance
     const filteredOptions = reactExports.useMemo(() => currentGroup.options.filter((option) => option.label.toLowerCase().includes(inputValue.toLowerCase()) ||
         option.value.toLowerCase().includes(inputValue.toLowerCase())), [inputValue, currentGroup.options]);
-    return (jsxRuntimeExports.jsxs(Field$1, { children: [jsxRuntimeExports.jsxs(Label$1, { children: [label, " ", required && jsxRuntimeExports.jsx(Span, { "aria-hidden": "true", children: "*" })] }), description && (jsxRuntimeExports.jsx(Hint$1, { dangerouslySetInnerHTML: { __html: description } })), jsxRuntimeExports.jsxs(Combobox, { ref: wrapperRef, inputProps: { required, name }, isEditable: true, isAutocomplete: true, validation: error ? "error" : undefined, onChange: handleChange, selectionValue: selectionValue, inputValue: inputValue, renderValue: ({ selection }) => selection?.label ?? jsxRuntimeExports.jsx(EmptyValueOption, {}), isExpanded: isExpanded, children: [currentGroup.type === "SubGroup" && (jsxRuntimeExports.jsx(Option, { ...currentGroup.backOption })), currentGroup.type === "SubGroup" ? (jsxRuntimeExports.jsx(OptGroup, { "aria-label": currentGroup.name, children: currentGroup.options.map((option) => (jsxRuntimeExports.jsx(Option, { ...option, children: option.menuLabel ?? option.label }, option.value))) })) : filteredOptions.length > 0 ? (filteredOptions.map((option) => (jsxRuntimeExports.jsx(Option, { ...option }, option.value)))) : (jsxRuntimeExports.jsx(Option, { isDisabled: true, children: "No results found" }))] }), error && jsxRuntimeExports.jsx(Message$1, { validation: "error", children: error })] }));
+    return (jsxRuntimeExports.jsxs(Field$1, { children: [jsxRuntimeExports.jsxs(Label$1, { children: [label, " ", required && jsxRuntimeExports.jsx(Span, { "aria-hidden": "true", children: "*" })] }), description && (jsxRuntimeExports.jsx(Hint$1, { dangerouslySetInnerHTML: { __html: description } })), jsxRuntimeExports.jsxs(Combobox, { ref: wrapperRef, inputProps: { required, name }, isEditable: true, isAutocomplete: true, validation: error ? "error" : undefined, onChange: handleChange, selectionValue: selectionValue, inputValue: inputValue, renderValue: ({ selection }) => selection?.label ?? jsxRuntimeExports.jsx(EmptyValueOption, {}), isExpanded: isExpanded, children: [currentGroup.type === "SubGroup" && (jsxRuntimeExports.jsx(Option, { ...currentGroup.backOption })), currentGroup.type === "SubGroup" ? (jsxRuntimeExports.jsx(OptGroup, { "aria-label": currentGroup.name, children: currentGroup.options.map((option) => (jsxRuntimeExports.jsx(Option, { ...option, children: option.menuLabel ?? option.label }, option.value))) })) : filteredOptions.length > 0 ? (filteredOptions.map((option) => (jsxRuntimeExports.jsx(Option, { ...option }, option.value)))) : (jsxRuntimeExports.jsx(Option, { disabled: true, children: "No results found" }))] }), jsxRuntimeExports.jsx("input", { type: "hidden", name: name, value: selectionValue }), error && jsxRuntimeExports.jsx(Message$1, { validation: "error", children: error })] }));
 }
 
 function useDebounce(value, delayMs) {
