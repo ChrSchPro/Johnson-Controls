@@ -35,6 +35,7 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
   const [inputValue, setInputValue] = useState(selectionValue);
   const [isExpanded, setIsExpanded] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const hasOpenedOnce = useRef(false);
 
   useEffect(() => {
     if (wrapperRef.current && required) {
@@ -76,6 +77,11 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
     }
     if (changes.isExpanded !== undefined) {
       setIsExpanded(changes.isExpanded);
+    }
+
+    if (changes.isExpanded === true && !hasOpenedOnce.current) {
+      hasOpenedOnce.current = true;
+      setInputValue("");
     }
   };
 
@@ -131,6 +137,7 @@ export function Tagger({ field, onChange }: TaggerProps): JSX.Element {
           <Option disabled>No results found</Option>
         )}
       </Combobox>
+      <input type="hidden" name={name} value={selectionValue} />
       {error && <Message validation="error">{error}</Message>}
     </GardenField>
   );
